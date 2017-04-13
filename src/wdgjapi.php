@@ -16,7 +16,9 @@ use Curl;
  *  'app_secret'=>'app_secret'
  *  );
  * $wdgjapi = new wdgjapi($data);
- * $r = $wdgjapi->send();
+ * $r = $wdgjapi->send(array('BarCode'=>'1111'));
+ * var_dump($r);
+ * $r = $wdgjapi->send(array('BarCode'=>'2222'));
  * var_dump($r);
  * exit;
  */
@@ -60,6 +62,7 @@ class wdgjapi {
     }
 
     private function create_sign(){
+        unset($this->conf['Sign']);
         $new_d = $this->conf;
         sort($new_d,SORT_STRING);
         $d = $this->app_secret;
@@ -72,7 +75,10 @@ class wdgjapi {
         }
     }
 
-    public function send(){
+    public function send($data=array()){
+        if(!empty($data)){
+            $this->conf = array_merge($this->conf,$data);
+        }
         $this->create_sign();
         $this->curl->post($this->url, $this->conf);
         if ($this->curl->error) {
@@ -81,7 +87,6 @@ class wdgjapi {
             return $this->curl->response;
         }
     }
-
 
 
 }
