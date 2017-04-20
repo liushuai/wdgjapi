@@ -63,15 +63,25 @@ class wdgjapi {
 
     private function create_sign(){
         unset($this->conf['Sign']);
+        if(isset($this->conf["content"])){
+            $con = $this->conf["content"];
+            unset($this->conf["content"]);
+        }
         $new_d = $this->conf;
         sort($new_d,SORT_STRING);
         $d = $this->app_secret;
+        if(isset($con)){
+            $d .= $con;
+        }
         $d.=join('',$new_d);
         $d.=$this->app_secret;
         $sign = strtolower(md5($d));
+        if(isset($con)) {
+            $this->conf["content"] = $con;
+        }
         $this->conf['Sign'] = $sign;
         foreach($this->conf as $k=>$v ){
-            $this->conf[$k] = urlencode($v);
+            $this->conf[$k] = $v;
         }
     }
 
