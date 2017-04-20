@@ -30,3 +30,8 @@ $r = $wdgjapi->send();
 var_dump($r);
 exit;
 ```
+
+## 注意
+目前测试了下面两个接口 其他接口兼容性没有做验证
+wdgj.erp.stock.query
+wdgj.com.goods.create
